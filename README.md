@@ -137,26 +137,6 @@ Before we could choose not to use trackBy, it's used for optimizing performances
 
 ---
 
-### ✅ Angular 17+ (`@for`)
-```html
-<fc-select formControlName="weekStartDay" width="fill" size="l" placeholder="Choose a start day">
-  @for (day of weekDays; track day.value) {
-    <fc-option [value]="day.value">{{ day.label }}</fc-option>
-  }
-</fc-select>
-
-<fc-select formControlName="unitCostCenter" size="l" width="fill" placeholder="Select a cost center">
-  @for (costCenter of unitOptions(); track costCenter.id) {
-    <fc-option [value]="costCenter.id" [disabled]="costCenter.disabled">
-      {{ costCenter.name }}
-    </fc-option>
-  }
-</fc-select>
-```
-
-
----
-
 # Older vs Angular 19 way - Examples
 
 ## 1️⃣ **toSignal() - Observable → Signal**
