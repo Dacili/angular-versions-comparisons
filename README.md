@@ -167,6 +167,32 @@ In **HTML** we're **calling it as it's function**.
 | **Learning Curve** | 🟡 Steep | 🟢 Easier |
 | **Type Safety** | 🟡 Good | 🟢 Better |
 
+## **Reading values in method .ts**
+
+### ❌  Old way - observable
+```typescript
+onSave(btn: FcProgressButton): void {
+  // Moraš subscribovati ili imati već subscribovan value
+  let facility: SmartScheduleFacility | null = null;
+  this.facility$.pipe(take(1)).subscribe(f => facility = f);
+}
+```
+
+### ✅ Angular 19 - Signal
+```typescript
+facility = toSignal(this.store.select(selectFacility)); // can be undefined
+
+// or if we want to make sure that the initial value is not undefined
+ const facility = toSignal(
+  this.store.select(selectFacility),
+  { initialValue: null }  // 👈 Garantuje da nije undefined
+);
+
+onSave(btn: FcProgressButton): void {
+  const existingFacility = this.facility(); // 👈 Direktan poziv, trenutna vrijednost!
+}
+```
+
 ---
 
 ## 2️⃣ **computed() - Derivovani state iz drugih signala**
@@ -343,36 +369,6 @@ private readonly actions$ = inject(Actions);
 
 constructor(@Inject(NOTIFICATION_SERVICE) private notificationService: _NotificationService) {
   super(FacilitySetupIcons, FacilitySetupActions);
-}
-```
-
----
-
-## 6️⃣ **Reading values in method**
-
-### ❌  Old way
-```typescript
-onSave(btn: FcProgressButton): void {
-  // Moraš subscribovati ili imati već subscribovan value
-  let facility: SmartScheduleFacility | null = null;
-  this.facility$.pipe(take(1)).subscribe(f => facility = f);
-  
-  const facilityToSave: SmartScheduleFacility = {
-    SmartScheduleFacilityID: facility?.SmartScheduleFacilityID ?? 0,
-    // ...
-  };
-}
-```
-
-### ✅ Angular 19 
-```typescript
-onSave(btn: FcProgressButton): void {
-  const existingFacility = this.facility(); // 👈 Direktan poziv, trenutna vrijednost!
-  
-  const facilityToSave: SmartScheduleFacility = {
-    SmartScheduleFacilityID: existingFacility?.SmartScheduleFacilityID ?? 0,
-    // ...
-  };
 }
 ```
 
