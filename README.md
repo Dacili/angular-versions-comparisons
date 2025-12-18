@@ -155,6 +155,19 @@ use **toSignal**
 In **HTML** we're **calling it as it's function**.  
 
 ---
+### Observable vs signal 
+
+| Feature | Observable | toSignal() |
+|---------|-----------|-----------|
+| **Memory Management** | ❌ Manual unsubscribe | ✅ Auto cleanup |
+| **Template Syntax** | `value$ \| async` | `value()` |
+| **Async Operations** | ✅ Native support | ❌ Need Observable wrapper |
+| **RxJS Operators** | ✅ Full access | ❌ Limited |
+| **Performance** | 🟡 Good | 🟢 Better |
+| **Learning Curve** | 🟡 Steep | 🟢 Easier |
+| **Type Safety** | 🟡 Good | 🟢 Better |
+
+---
 
 ## 2️⃣ **computed() - Derivovani state iz drugih signala**
 
@@ -183,6 +196,15 @@ currentStep = computed(() => this.stepInfo().stepMap['facilitySetup'] ?? 1);
 <!-- Template -->
 <span>Step {{ currentStep() }}</span>
 ```
+### map vs computed 
+| Feature | map() | computed() |
+|---------|-------|-----------|
+| **Memoization** | ❌ No | ✅ Yes |
+| **Performance** | 🟡 Creates Observable | 🟢 Optimized |
+| **Chaining** | ✅ Pipe operators | ❌ Signal-only |
+| **Async Support** | ✅ Yes | ❌ No |
+| **Template** | Need `async` | Direct call `()` |
+
 
 ---
 
@@ -291,7 +313,14 @@ constructor() {
 
 // ✅ Nema potrebe za ngOnDestroy - auto cleanup!
 ```
-
+### subscribe vs effect
+| Feature | subscribe() | effect() |
+|---------|-----------|----------|
+| **Cleanup** | ❌ Manual | ✅ Auto |
+| **Re-execution** | ❌ Manual | ✅ Auto on dependency change |
+| **Error Handling** | ✅ Built-in | ❌ Limited |
+| **Cancellation** | ✅ unsubscribe() | ❌ No control |
+| **Memory Leaks** | ⚠️ High risk | ✅ Safe |
 ---
 
 ## 5️⃣ **inject() - Dependency Injection**
@@ -349,17 +378,3 @@ onSave(btn: FcProgressButton): void {
 
 ---
 
-## 📊 **Ključne razlike**
-
-| Feature | Stari (Observable) | Novi (Signal) |
-|---------|-------------------|---------------|
-| **Dobijanje vrijednosti** | `value$ \| async` | `value()` |
-| **Kombinovanje** | `combineLatest`, `map` | `computed()` |
-| **Side effects** | `subscribe()` + `takeUntil` | `effect()` |
-| **Memory leaks** | ❌ Moraš ručno clean up | ✅ Auto cleanup |
-| **Čitanje u TS** | `pipe(take(1)).subscribe()` | `value()` |
-| **Dependency Injection** | Constructor params | `inject()` funkcija |
-
----
-
-**Suština:** Signals su sinhroniji i direktniji - zoveš kao funkciju `value()`, dok Observable uvek trebaš async pipe ili subscribe. 🎯
