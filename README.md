@@ -48,7 +48,7 @@ Before we could choose not to use trackBy, it's used for optimizing performances
 | `*ngIf="condition"` | `@if (condition) { }` | 
 | `*ngFor="let item of items"` | `@for (item of items; track item.id) { }` | 
 | `*ngSwitch` | `@switch (value) { @case (1) { } }` | 
-| else in *ngIf | `@else { }` |
+| else in *ngIf, `<div *ngIf="condition1; else elseBlock"></div><ng-template #elseBlock>` |  `@else if (condition2) { }` or `@else { }` |
 | else in *ngIf | `@empty { }` -> Prazna lista |
 
 ---
